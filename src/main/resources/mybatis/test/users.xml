@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.eggseller.test.repository.test.UserMapper">
+	
+	<select id="getUser" resultType="User" parameterType="User">
+		SELECT 
+			*, 'ROLE_USER,    ROLE_MANAGER, ROLE_ADMIN  ' roleList
+		FROM users 
+		WHERE username = #{username}
+	</select>
+	
+	<select id="getUserByUsername" resultType="User" parameterType="String">
+		SELECT *, 'ROLE_USER,    ROLE_MANAGER 'roles FROM users WHERE username = #{username}
+	</select>
+	
+	<select id="getUsersXml" resultType="User">
+		SELECT * FROM users
+	</select>
+	
+
+	<insert id="insertUserXml" parameterType="User">
+		INSERT INTO users(username, password) VALUES('reddog', 'reddog')
+	</insert>
+	
+</mapper>        
