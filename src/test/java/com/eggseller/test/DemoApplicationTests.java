@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.eggseller.test.controller.BasicController;
 import com.eggseller.test.model.Task;
 import com.eggseller.test.model.User;
 import com.eggseller.test.repository.eggseller.TaskMapper;
@@ -38,6 +39,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @SpringBootTest
 class DemoApplicationTests {
+	
+	@Autowired
+	BasicController basicController;
+	
+	@Test
+	public void testController() {
+		assert basicController.admin().equals("admin");
+	}
 
 	@Test
 	public void testBreakIf() {

@@ -27,10 +27,10 @@ spring:
       ddl-auto: none
     open-in-view: false
     show-sql: true
-#    properties:
-#      hibernate:
-#        format_sql: true
-#        use_sql_comments: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
 
   mvc:
     view:
@@ -65,7 +65,7 @@ spring:
         connection-test-query: SELECT 1
         minimum-idle: 10
         maximum-pool-size: 50
-        transaction-isolation: TRANSACTION_READ_UNCOMMITTED
+        transaction-isolation: TRANSACTION_SEREALIZBLE
         pool-name: pool-eggseller
     test-db-postgre:
       driver-class-name: org.postgresql.ds.PGSimpleDataSource
@@ -80,7 +80,12 @@ mybatis:
     lazyLoadingEnabled: true
     aggressiveLazyLoading: false
     mapUnderscoreToCamelCase: true
-    
+
+swagger:
+  api:
+    title: aaa
+    description: bbb
+    version: 1.0.0    
 
   
 logging:

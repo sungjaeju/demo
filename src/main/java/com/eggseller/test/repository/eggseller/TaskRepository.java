@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.eggseller.test.entity.TaskEntity;
 
 @Repository
-public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
+public interface TaskRepository extends JpaRepository<TaskEntity, Integer> {
 
 	public List<TaskEntity> findAll();
 
