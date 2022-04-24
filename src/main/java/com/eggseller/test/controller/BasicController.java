@@ -22,13 +22,14 @@ import com.eggseller.test.model.Response;
 import com.eggseller.test.model.ResponseSchema;
 import com.eggseller.test.model.Task;
 import com.eggseller.test.model.User;
+import com.eggseller.test.repository.eggseller.TaskMapper;
 import com.eggseller.test.repository.eggseller.TaskRepository;
+import com.eggseller.test.repository.test.UserMapper;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,11 +38,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @Tag(name = "user", description = "사용자 API")
-@ApiResponses({
-	@ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = ResponseSchema.class))),
-	@ApiResponse(responseCode = "500", description = "실패", content = @Content(schema = @Schema(implementation = ResponseSchema.class)))
-})
+//@ApiResponses({
+//	@ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = ResponseSchema.class))),
+//	@ApiResponse(responseCode = "500", description = "실패", content = @Content(schema = @Schema(implementation = ResponseSchema.class)))
+//})
 public class BasicController {
+	
+	private final UserMapper userMapper;
+	private final TaskMapper taskMapper;
 	
 	private final TaskRepository taskRepository;
 	
@@ -49,7 +53,14 @@ public class BasicController {
 	@ResponseBody
 	//@ApiOperation(value = "세션 조회", notes = "세션을 조회합니다.")
 	@Operation(summary = "세션 조회", description = "세션을 조회합니다.")
+	@ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = ResponseSchema.class)))
 	public ResponseEntity<?> getSessionId(HttpSession session) {
+		
+		List<User> usersXml = userMapper.getUsersXml();
+		log.info("####### users: {}", usersXml.toString());
+		List<Task> tasksXml = taskMapper.getTasksXml();
+		log.info("####### tasks: {}\n", tasksXml.toString());
+		
 		return Response.ok(session.getId());
 	}
 
@@ -79,7 +90,7 @@ public class BasicController {
 		Map<String, String> responseMap = new HashMap<>();
 		responseMap.put("jwt", jwt);
 		//return new ResponseEntity<>(responseMap, HttpStatus.OK);
-		return ResponseEntity.ok().body(responseMap);
+		return Response.ok(responseMap);
 	}
 	
 

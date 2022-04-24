@@ -15,28 +15,19 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
-@ConfigurationProperties("swagger")
 public class SwaggerConfig {
-    private Api api;
-    
-    @Getter
-    @Setter
-    public static class Api {
-    	private String title;
-    	private String description;
-    	private String version;
-    }
 
-    @Bean
     public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .consumes(getConsumeContentTypes())
-                .produces(getProduceContentTypes())
+        return new Docket(DocumentationType.OAS_30)
+        		.consumes(getConsumeContentTypes())
+        		.produces(getProduceContentTypes())
+                .useDefaultResponseMessages(false)
                 .apiInfo(getApiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.ddaja.ddaja.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.eggseller.test"))
                 .paths(PathSelectors.ant("/**"))
                 .build();
     }
@@ -56,9 +47,9 @@ public class SwaggerConfig {
 
     private ApiInfo getApiInfo() {
         return new ApiInfoBuilder()
-                .title(api.getTitle())
-                .description(api.getDescription())
-                .version(api.getVersion())
+                .title("KBSTAR MYWALLET")
+                .description("KBSTAR MYWALLET API")
+                .version("1.0.0")
                 .build();
     }
  

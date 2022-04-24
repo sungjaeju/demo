@@ -19,23 +19,25 @@ spring:
     host: localhost
     port: 6379
     
-  jpa:
+#  jpa:
 #    database: mysql
 #    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    generate-ddl: false
-    hibernate:
-      ddl-auto: none
-    open-in-view: false
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        use_sql_comments: true
+#    generate-ddl: false
+#    hibernate:
+#      ddl-auto: none
+#    open-in-view: false
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        use_sql_comments: true
 
   mvc:
     view:
       prefix: classpath:templates/
       suffix: html
+    pathmatch:
+      matching-strategy: ant-path-matcher
 
   security:
     user:
@@ -82,9 +84,9 @@ mybatis:
     mapUnderscoreToCamelCase: true
 
 swagger:
-  api:
-    title: aaa
-    description: bbb
+  apiinfo:
+    title: aaaaaaa
+    description: ccccccc
     version: 1.0.0    
 
   

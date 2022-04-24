@@ -15,7 +15,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import lombok.RequiredArgsConstructor;
 
-@Configuration
+//@Configuration
 @RequiredArgsConstructor
 public class JpaConfig {
 	private final DatabaseConfig dataSourceConfig;
@@ -69,7 +69,7 @@ public class JpaConfig {
 	
 	@PropertySource({ "classpath:application.yml" })
 	@EnableJpaRepositories(
-	    basePackages = "com.jpa.second.repository", // Second Repository 경로
+	    basePackages = "com.eggseller.test.repository.eggseller", // Second Repository 경로
 	    entityManagerFactoryRef = "secondEntityManager", 
 	    transactionManagerRef = "secondTransactionManager"
 	)
