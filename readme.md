@@ -1,3 +1,5 @@
+$ gradle init --type pom
+
 $ gradlew tasks
 $ gradlew clean build
 $ gradlew bootRun
