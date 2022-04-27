@@ -44,6 +44,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(value = { BindException.class, MethodArgumentNotValidException.class })
 	public String handleValidationExceptions(BindException e) {
 		Map<String, String> errors = new HashMap<>();
+		//String msg = e.bindingResult.getFieldError().getDefaultMessage();
 		e.getBindingResult().getAllErrors().forEach((error) -> {
 			String fieldName = ((FieldError) error).getField();
 			String errorMessage = error.getDefaultMessage();
