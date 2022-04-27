@@ -1,4 +1,4 @@
-$ gradle init --type pom
+$ gradlew init --type pom
 
 $ gradlew tasks
 $ gradlew clean build
