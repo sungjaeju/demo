@@ -8,6 +8,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -28,9 +30,21 @@ public class AuthenSuccessHandler implements AuthenticationSuccessHandler {
 	
 		log.info("############ authenSuccessHandler: {}", request.getSession().getAttribute("jwtId"));
 		
-//		response.sendRedirect("/loginResult");
-		if (request.getSession().getAttribute("jwtId") != null)
-			request.getRequestDispatcher("/loginResult").forward(request, response);
+		//response.sendRedirect("/loginResult");
+		//if (request.getSession().getAttribute("jwtId") != null)
+		//	request.getRequestDispatcher("/loginResult").forward(request, response);
+		
+		//JSONObject body = new JSONObject();
+		Map<String, Object> body = new HashMap<>();
+        String message = "Login success";
+        body.put("status", HttpServletResponse.SC_ACCEPTED);
+        body.put("message", message);
+        
+		response.setContentType("application/json;charset=utf-8");
+		response.setStatus(HttpServletResponse.SC_ACCEPTED);
+		response.getWriter().println(body);
+		//request.getRequestDispatcher("/loginResult").forward(request, response);
+		
 	}
 	
 	public ResponseEntity<? extends Map<String,String>> onJwtAuthenticationSuccess(String token) {

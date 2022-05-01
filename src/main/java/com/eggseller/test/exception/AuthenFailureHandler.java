@@ -9,6 +9,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -82,8 +85,17 @@ public class AuthenFailureHandler implements AuthenticationFailureHandler {
 		
 //		response.sendRedirect(forwardUrl);
 //		request.setAttribute("error", message);
-		request.setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, message);
-		request.getRequestDispatcher(FORWARD_URI).forward(request, response);
+//		request.setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, message);
+//		request.getRequestDispatcher(FORWARD_URI).forward(request, response);
+		
+		response.setContentType("application/json");
+		response.setStatus(HttpStatus.UNAUTHORIZED.value());
+		try {
+			response.getWriter().println(new JSONObject().put("exception", "not allow login"));
+		} catch (IOException | JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 

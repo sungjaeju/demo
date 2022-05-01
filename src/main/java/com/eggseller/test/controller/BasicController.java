@@ -66,10 +66,11 @@ public class BasicController {
 
 
 	@GetMapping({"", "/"})
-//	@ResponseBody
-	public String index(@AuthenticationPrincipal User principal) {
+	@ResponseBody
+	public String index(@AuthenticationPrincipal User principal, Authentication authentication) {
 		log.info("#### pirncipal: {}", principal);
-		log.info("#### getPassword: {}", principal.getPassword());
+		log.info("######## Authentication: {} ", authentication);
+		//log.info("#### getPassword: {}", principal.getPassword());
 		return "index";
 	}
 	

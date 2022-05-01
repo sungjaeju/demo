@@ -1,10 +1,11 @@
-package com.skbp.admin.system.handler;
+package com.eggseller.test.exception;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@ControllerAdvice
+@ControllerAdvice(basePackages = "com.eggseller.test")
 @Component
 public class GlobalExceptionHandler {
 
@@ -50,6 +51,17 @@ public class GlobalExceptionHandler {
 			String errorMessage = error.getDefaultMessage();
 			errors.put(fieldName, errorMessage);
 		});
+
+		return errors.toString();
+	}
+	
+	//@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	@ExceptionHandler(value = { BadCredentialsException.class })
+	public String handleBadCredentialsException(BindException e) {
+		Map<String, Object> errors = new HashMap<>();
+		errors.put("code", HttpStatus.UNAUTHORIZED);
+		errors.put("message", "Faild login");
+		log.info("##### errors: {}", errors);
 
 		return errors.toString();
 	}

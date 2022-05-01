@@ -1,4 +1,4 @@
-package com.skbp.admin.common.util;
+package com.eggseller.test.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
