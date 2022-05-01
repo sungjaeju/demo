@@ -230,7 +230,7 @@ class DemoApplicationTests {
 	
 	@Test
     void jasypt() {
-        String username = "eggseller";
+        String username = "postgres";
         String password = "387421";
 
         System.out.println(jasyptEncoding(username));

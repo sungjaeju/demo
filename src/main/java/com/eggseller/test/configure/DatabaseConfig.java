@@ -9,8 +9,6 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,27 +23,12 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import com.zaxxer.hikari.HikariDataSource;
-
 import lombok.RequiredArgsConstructor;
 
 @Configuration
+@RequiredArgsConstructor
 public class DatabaseConfig {
-	/**
-	 * DataSources
-	 */
-	@Primary
-	@Bean(name = "testDataSource")
-	@ConfigurationProperties(prefix = "spring.datasource.test-db")
-	public DataSource testDataSource() {
-		return DataSourceBuilder.create().type(HikariDataSource.class).build();
-	}
-	
-	@Bean(name = "eggsellerDataSource")
-	@ConfigurationProperties(prefix = "spring.datasource.eggseller-db")
-	public DataSource eggsellerDataSource() {
-		return new HikariDataSource();
-	}
+	private final DataSourceConfig dataSourceConfig;
 	
 //	public class testDataSourceConfigure {
 //		@Primary
@@ -99,7 +82,7 @@ public class DatabaseConfig {
 		@Bean
 		public LocalContainerEntityManagerFactoryBean masterEntityManager() {
 			LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-			em.setDataSource(eggsellerDataSource());
+			em.setDataSource(dataSourceConfig.eggsellerDataSource());
 	        em.setPackagesToScan(new String[] { "com.eggseller.test.entity" });
 		
 			HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -109,7 +92,8 @@ public class DatabaseConfig {
 			HashMap<String, Object> properties = new HashMap<>();
 			properties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
 			properties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
-			properties.put("hibernate.showSql", "true");
+			properties.put("hibernate.show_sql", true);
+			properties.put("hibernate.format_sql", true);
 			em.setJpaPropertyMap(properties);
 			return em;
 		}

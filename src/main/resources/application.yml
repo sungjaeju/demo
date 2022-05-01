@@ -19,18 +19,17 @@ spring:
     host: localhost
     port: 6379
     
-#  jpa:
+  jpa:
 #    database: mysql
 #    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-#    generate-ddl: false
-#    hibernate:
-#      ddl-auto: none
-#    open-in-view: false
-#    show-sql: true
-#    properties:
-#      hibernate:
-#        format_sql: true
-#        use_sql_comments: true
+    properties:
+      hibernate:
+        generate-ddl: false
+        open-in-view: false
+        ddl-auto: none
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
 
   mvc:
     view:
@@ -58,10 +57,10 @@ spring:
         transaction-isolation: TRANSACTION_READ_UNCOMMITTED
         pool-name: pool-eggseller
     eggseller-db:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: "jdbc:mysql://localhost/eggseller?autoReconnect=true&serverTimezone=UTC"
+      driver-class-name: org.postgresql.Driver
+      jdbc-url: "jdbc:postgresql://localhost:5432/postgres"
       username: eggseller
-      password: ENC(tWGo680FO0RVhQ83l79W/Q==)
+      password: ENC(gMlOZzl7kg2m6pouK567kmo1Jp93WBmh)
       hikari:
         auto-commit: false
         connection-test-query: SELECT 1
@@ -73,7 +72,7 @@ spring:
       driver-class-name: org.postgresql.ds.PGSimpleDataSource
       jdbc-url: "jdbc:postgresql://localhost:5432/test"
       username: postgres
-      password: ENC(tWGo680FO0RVhQ83l79W/Q==)
+      password: ENC(gMlOZzl7kg2m6pouK567kmo1Jp93WBmh)
 
 mybatis:
 #  mapper-locations: classpath:mappers/**/*.xml

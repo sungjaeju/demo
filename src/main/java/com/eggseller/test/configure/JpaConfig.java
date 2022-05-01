@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 //@Configuration
 @RequiredArgsConstructor
 public class JpaConfig {
-	private final DatabaseConfig dataSourceConfig;
+	private final DataSourceConfig dataSourceConfig;
 	
 	@PropertySource({ "classpath:application.yml" })
 	@EnableJpaRepositories(

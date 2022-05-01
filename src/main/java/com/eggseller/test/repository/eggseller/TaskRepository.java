@@ -12,15 +12,15 @@ import com.eggseller.test.entity.TaskEntity;
 @Repository
 public interface TaskRepository extends JpaRepository<TaskEntity, Integer> {
 
-	public List<TaskEntity> findAll();
-
-	public Page<TaskEntity> findAll(Pageable pageable);
-	
+//	public List<TaskEntity> findAll();
+//
+//	public Page<TaskEntity> findAll(Pageable pageable);
+//	
 	public List<TaskEntity> findByIdGreaterThan(int i, Pageable pageable);
-	
-	public List<TaskEntity> findByIdLike(String keyword);
-
-	public TaskEntity findById(String id);
+//	
+//	public List<TaskEntity> findByIdLike(String keyword);
+//
+//	public TaskEntity findById(String id);
 	
 //	public boolean save(Task);
 	
