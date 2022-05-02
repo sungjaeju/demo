@@ -134,6 +134,7 @@ public class DatabaseConfig {
 			sessionFactory.setDataSource(dataSource);
 			sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mybatis/test/*.xml"));
 			sessionFactory.setTypeAliasesPackage("com.eggseller.test.model");
+			sessionFactory.setConfigLocation(new PathMatchingResourcePatternResolver().getResource("classpath:mybatis/mybatis-config.xml"));
 			return sessionFactory.getObject();
 		}
 		
@@ -162,6 +163,7 @@ public class DatabaseConfig {
 			sessionFactory.setDataSource(dataSource);
 			//sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mybatis/eggseller/*.xml"));
 			sessionFactory.setMapperLocations(applicationContext.getResources("classpath:mybatis/eggseller/*.xml"));
+			sessionFactory.setConfigLocation(applicationContext.getResource("classpath:mybatis/mybatis-config.xml"));
 			sessionFactory.setTypeAliasesPackage("com.eggseller.test.model");
 			return sessionFactory.getObject();
 		}

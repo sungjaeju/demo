@@ -3,6 +3,8 @@ package com.eggseller.test.exception;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.security.auth.login.CredentialException;
 import javax.servlet.ServletException;
@@ -45,8 +47,6 @@ public class AuthenFailureHandler implements AuthenticationFailureHandler {
 //		Assert.isTrue(UrlUtils.isValidRedirectUrl(forwardUrl), () -> "'" + forwardUrl + "' is not a valid forward URL");
 //		this.forwardUrl = forwardUrl;
 //	}
-
-	
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
@@ -60,9 +60,9 @@ public class AuthenFailureHandler implements AuthenticationFailureHandler {
 //		request.getAttributeNames().asIterator().forEachRemaining(System.out::println);
 
 		String exceptionClassName = exception.getClass().getSimpleName();
-		log.info("##### exceptionClassName: {}", exceptionClassName);
-		log.info("##### response: {}", response.getStatus());
-		log.info("##### exception: {}", exception);
+		log.info("##### AuthenFailureHandler.exceptionClassName: {}", exceptionClassName);
+		log.info("##### AuthenFailureHandler.response: {}", response.getStatus());
+		log.info("##### AuthenFailureHandler.exception: {}", exception);
 		
 		String message = "서버오류입니다. 잠시후 다시 시도해 보세요.";
 		
@@ -83,19 +83,32 @@ public class AuthenFailureHandler implements AuthenticationFailureHandler {
 			message = "비밀번화 사용기간이 만료되었습니다.";
 		} 
 		
+		
+		
 //		response.sendRedirect(forwardUrl);
 //		request.setAttribute("error", message);
 //		request.setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, message);
 //		request.getRequestDispatcher(FORWARD_URI).forward(request, response);
 		
-		response.setContentType("application/json");
-		response.setStatus(HttpStatus.UNAUTHORIZED.value());
-		try {
-			response.getWriter().println(new JSONObject().put("exception", "not allow login"));
-		} catch (IOException | JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		//response.setContentType("application/json");
+		//response.setStatus(HttpStatus.UNAUTHORIZED.value());
+		//response.sendError(HttpStatus.UNAUTHORIZED.value());
+//		try {
+//			response.getWriter().println(new JSONObject().put("exception", "not allow login"));
+//		} catch (IOException | JSONException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
+		
+		Map<String, Object> body = new HashMap<>();
+        body.put("status", response.getStatus());
+        body.put("message", message);
+        
+		response.setContentType("application/json;charset=utf-8");
+		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		response.getWriter().println(body);
+		return;
 	}
 
 

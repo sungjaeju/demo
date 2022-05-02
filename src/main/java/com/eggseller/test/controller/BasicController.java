@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,14 +14,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.eggseller.test.entity.TaskEntity;
 import com.eggseller.test.model.Response;
 import com.eggseller.test.model.ResponseSchema;
 import com.eggseller.test.model.Task;
+import com.eggseller.test.model.TaskReq;
 import com.eggseller.test.model.User;
 import com.eggseller.test.repository.eggseller.TaskMapper;
 import com.eggseller.test.repository.eggseller.TaskRepository;
@@ -80,16 +86,17 @@ public class BasicController {
 	}
 
 	@ResponseBody
-	@PostMapping("/loginResult")
+	@GetMapping("/loginResult")
 	public ResponseEntity<?>  loginResult(Authentication authentication,
 			@AuthenticationPrincipal User principal) {
 		log.info("######## Authentication: {} ", authentication);
 		log.info("######## principal: {} ", principal);
-		String jwt = principal.getJwt();
-		log.info("######## jwt: {} ", jwt);
+		//String jwt = principal.getJwt();
+		//log.info("######## jwt: {} ", jwt);
 		
 		Map<String, String> responseMap = new HashMap<>();
-		responseMap.put("jwt", jwt);
+		responseMap.put("message", "loginresult");
+		//responseMap.put("jwt", jwt);
 		//return new ResponseEntity<>(responseMap, HttpStatus.OK);
 		return Response.ok(responseMap);
 	}
@@ -108,6 +115,30 @@ public class BasicController {
 	){
 		log.info("#### BasicController.pirncipal: {}", principal);
 		return "manager";
+	}
+	
+	@ResponseBody
+	@GetMapping("/task/{taskName}")
+	public ResponseEntity<?> getTask(
+			@PathVariable String taskName
+			) {
+		log.info("########### taskName: {} ", taskName);
+
+		
+		Task task = taskMapper.selectTask(taskName);
+		log.info("########### task: {} ", task);
+		
+
+		return new ResponseEntity<> (task, HttpStatus.OK);
+	}
+	
+	@ResponseBody
+	@PostMapping("/task/save")
+	public ResponseEntity<?> saveTasks(@Valid @RequestBody TaskReq taskReq) {
+		log.info("########### taskReq: {} ", taskReq.toString());
+
+		
+		return new ResponseEntity<> (taskReq, HttpStatus.OK);
 	}
 	
 	@ResponseBody

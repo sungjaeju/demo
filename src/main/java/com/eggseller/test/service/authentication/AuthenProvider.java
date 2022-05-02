@@ -1,18 +1,11 @@
 package com.eggseller.test.service.authentication;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.http.HttpStatus;
-import org.springframework.jca.context.SpringContextResourceAdapter;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,14 +13,12 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
 
 import com.eggseller.test.model.User;
 import com.eggseller.test.util.JwtUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import springfox.documentation.spi.service.contexts.ResponseContext;
 
 @Service
 @RequiredArgsConstructor
@@ -69,10 +60,35 @@ public class AuthenProvider implements AuthenticationProvider {
 		//Fetch user data from database
 		User principal = (User) authenDetailsService.loadUserByUsername(username);
 		if (null == principal) {
-			log.info("###### UsernameNotFoundException");
+			log.info("###### not matched username");
 			throw new UsernameNotFoundException("사용자 발견못함");
 //			throw new DisabledException("디세이블됨");
 		} else if (!passwordEncoder.matches(password, principal.getPassword())) {
+//			log.info("###### not matched password");
+//			Map<String, Object> body = new HashMap<>();
+//	        String message = "Login success";
+//	        body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
+//	        body.put("message", message);
+//	        
+//			response.setContentType("application/json;charset=utf-8");
+//			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//			try {
+//				response.getWriter().println(body);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//			log.info("errocode: {}", ErrorCode.NOT_FOLLOW);
+//			log.info("errocode.name: {}", ErrorCode.NOT_FOLLOW.name());
+//			log.info("errocode.key: {}", ErrorCode.NOT_FOLLOW.getKey());
+//			log.info("errocode.val: {}", ErrorCode.NOT_FOLLOW.getVal());
+//			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//			principal = null;
+//			try {
+//				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "not matched username");
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 			throw new BadCredentialsException("비밀번호 틀림");	
 		}
 		
@@ -90,9 +106,9 @@ public class AuthenProvider implements AuthenticationProvider {
 		
 		//principal.setJwt(token);
 		
-		log.info("###### principal: {}", principal.toString());
-		log.info("###### principal,getAuthorities: {}", principal.getAuthorities().toString());
-		return new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
+		//log.info("###### principal: {}", principal.toString());
+		//log.info("###### principal,getAuthorities: {}", principal.getAuthorities().toString());
+		return new UsernamePasswordAuthenticationToken(principal, null, principal == null ? null :principal.getAuthorities());
 		
 	}
 

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@ControllerAdvice(basePackages = "com.eggseller.test")
+@ControllerAdvice
 @Component
 public class GlobalExceptionHandler {
 
@@ -45,14 +45,16 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(value = { BindException.class, MethodArgumentNotValidException.class })
 	public String handleValidationExceptions(BindException e) {
 		Map<String, String> errors = new HashMap<>();
-		//String msg = e.bindingResult.getFieldError().getDefaultMessage();
+		String msg = e.getBindingResult().getFieldError().getDefaultMessage();
+		log.info("##### binding msg: {}", msg);
 		e.getBindingResult().getAllErrors().forEach((error) -> {
 			String fieldName = ((FieldError) error).getField();
 			String errorMessage = error.getDefaultMessage();
 			errors.put(fieldName, errorMessage);
 		});
-
-		return errors.toString();
+		log.info("##### binding errors: {}", errors.toString());
+//		return errors.toString();
+		return null;
 	}
 	
 	//@ResponseStatus(HttpStatus.UNAUTHORIZED)

@@ -14,6 +14,8 @@ import com.eggseller.test.model.User;
 
 @Mapper
 public interface TaskMapper {
+	
+	Task selectTask(String taskName);
 
 	@Select("SELECT * FROM tasks")
     List<Task> getTasks();

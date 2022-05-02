@@ -34,10 +34,18 @@ public class AuthenSuccessHandler implements AuthenticationSuccessHandler {
 		//if (request.getSession().getAttribute("jwtId") != null)
 		//	request.getRequestDispatcher("/loginResult").forward(request, response);
 		
+		int status = response.getStatus();
+		String message = "Login success";
+		
+		log.info("##### AuthenSuccessHandler.status: {}", status);
+		if (401 == status) {
+			
+			message = "login faild";
+		}
+		
 		//JSONObject body = new JSONObject();
 		Map<String, Object> body = new HashMap<>();
-        String message = "Login success";
-        body.put("status", HttpServletResponse.SC_ACCEPTED);
+        body.put("status", status);
         body.put("message", message);
         
 		response.setContentType("application/json;charset=utf-8");

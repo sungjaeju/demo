@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.eggseller.test.exception.AuthenFailureHandler;
@@ -34,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private final AuthenProvider authenProvider;
 	private final AuthenFailureHandler authenFailureHandler;
 	private final AuthenSuccessHandler authenSuccessHandler;
-//	private final JwtAuthenFilter jwtAuthenFilter;
+	//private final JwtAuthenFilter jwtAuthenFilter;
 //	private final UserAuthService userAuthService;
 //	private final UserMapper userMapper;
 
@@ -80,7 +82,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 			.antMatchers("/admin").hasRole("ADMIN")
 			.antMatchers("/manager").hasAnyRole("ADMIN", "MANAGER")
-			.antMatchers("/", "/login", "/logout", "/loginAction", "/loginResult", "/anonymous/**", "/guest/**", "/tasks/**").permitAll()
+			.antMatchers("/", "/login", "/logout", "/loginAction", "/loginResult", "/anonymous/**", "/task/**", "/tasks/**").permitAll()
 			.anyRequest().authenticated();
 		
 		http.formLogin()
@@ -88,9 +90,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.loginProcessingUrl("/loginAction")
 			//.usernameParameter("userId")
 			//.passwordParameter("password")
-//		    .defaultSuccessUrl("/manager")
-//			.failureUrl("/login?error")
-			//.failureHandler(authenFailureHandler)
+		    //.defaultSuccessUrl("/manager")
+			//.failureUrl("/loginResult")
+			.failureHandler(authenFailureHandler)
 			.successHandler(authenSuccessHandler);
 		
 		http.logout()
@@ -105,10 +107,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		//http.addFilterBefore(jwtAuthenFilter, UsernamePasswordAuthenticationFilter.class);
 		
-		//http.exceptionHandling()
-		//	.authenticationEntryPoint(authenticationEntryPoint());
+		http.exceptionHandling()
+			.accessDeniedHandler(accessDeniedHAndler())
+			.authenticationEntryPoint(authenticationEntryPoint());
 	}
 	
+	
+	@Bean
+	protected AccessDeniedHandler accessDeniedHAndler() {
+		return new AccessDeniedHandler() {
+			
+			@Override
+			public void handle(HttpServletRequest request, HttpServletResponse response,
+					AccessDeniedException accessDeniedException) throws IOException, ServletException {
+				// TODO Auto-generated method stub
+				log.error("가입되지 않은 사용자 접근");
+				response.setContentType("application/json;charset=utf-8");
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				response.getWriter().println(accessDeniedException);
+				
+			}
+		};
+		
+	}
 	
 	
 //	@Bean
@@ -129,13 +150,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	//For Ajax response
 	@Bean
-	protected AuthenticationEntryPoint authenticationEntryPoint() {
+	public AuthenticationEntryPoint authenticationEntryPoint() {
 		return new AuthenticationEntryPoint() {
 
 			@Override
 			public void commence(HttpServletRequest request, HttpServletResponse response,
 					AuthenticationException authException) throws IOException, ServletException {
 				// TODO Auto-generated method stub
+				log.info("########### securityConfig.authenticationEntryPoint");
 				response.setContentType("application/json;charset=utf-8");
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 				response.getWriter().println(authException);
