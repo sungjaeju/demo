@@ -10,6 +10,10 @@ server:
 #        secure: true
   
 spring:
+  config:
+    activate:
+      on-profile: local
+      
   session:
     store-type: redis
     redis:
@@ -73,7 +77,14 @@ spring:
       jdbc-url: "jdbc:postgresql://localhost:5432/test"
       username: postgres
       password: ENC(gMlOZzl7kg2m6pouK567kmo1Jp93WBmh)
+    
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
 
+      
 #mybatis:
 ##  mapper-locations: classpath:mappers/**/*.xml
 #  type-aliases-package: com.eggseller.test.model
@@ -92,15 +103,9 @@ mybatis:
 #  mapper-locations:
 #  - classpath:mybatis/mapper/*.xml
 
-
-swagger:
-  apiinfo:
-    title: aaaaaaa
-    description: ccccccc
-    version: 1.0.0    
-
-  
 logging:
   level:
     root: error
     '[com.eggseller.test]': debug
+
+      

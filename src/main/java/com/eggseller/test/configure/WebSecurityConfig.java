@@ -1,6 +1,7 @@
 package com.eggseller.test.configure;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.eggseller.test.exception.AuthenFailureHandler;
 import com.eggseller.test.exception.AuthenSuccessHandler;
@@ -193,4 +197,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			
 		};		
 	}
+	
+	
+	//CORS
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration corsConfig = new CorsConfiguration();
+		corsConfig.addAllowedOrigin("*");
+		corsConfig.addAllowedHeader("*");
+		//corsConfig.addAllowedMethod("*");
+		corsConfig.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT"));
+		corsConfig.setAllowCredentials(true);
+		corsConfig.setMaxAge(6000L);
+
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", corsConfig);
+		return source;
+	}
+	
 }

@@ -3,6 +3,8 @@ package com.eggseller.test.exception;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -65,6 +69,10 @@ public class GlobalExceptionHandler {
 		errors.put("message", "Faild login");
 		log.info("##### errors: {}", errors);
 
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder
+				.getRequestAttributes()).getRequest();
+		String uri = request.getRequestURI();
+		
 		return errors.toString();
 	}
 
