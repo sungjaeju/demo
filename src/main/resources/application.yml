@@ -49,9 +49,9 @@ spring:
   
   datasource:
     test-db:
-      //compile group: 'org.bgee.log4jdbc-log4j2', name: 'log4jdbc-log4j2-jdbc4.1', version: '1.16'
-      //driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-      //jdbc-url: jdbc:log4jdbc:mysql://localhost/test?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true&serverTimezone=UTC&tinyInt1isBit=false"
+      #compile group: 'org.bgee.log4jdbc-log4j2', name: 'log4jdbc-log4j2-jdbc4.1', version: '1.16'
+      #driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      #jdbc-url: jdbc:log4jdbc:mysql://localhost/test?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true&serverTimezone=UTC&tinyInt1isBit=false"
       driver-class-name: com.mysql.cj.jdbc.Driver
       jdbc-url: "jdbc:mysql://localhost/test?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true&serverTimezone=UTC&tinyInt1isBit=false"
       username: eggseller
